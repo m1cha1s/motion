@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Action;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,31 +17,33 @@ import org.jfree.data.xy.XYDataset;
 public class Gui implements ActionListener
 {
     private JFrame window = new JFrame(); // Main window
-    private JPanel settings = new JPanel(); // Settings panel
+    private JPanel panel = new JPanel(new GridBagLayout()); // Main window panel
+    private JFrame graph = new JFrame(); // Graph panel
+    private JPanel settings = new JPanel(new GridBagLayout()); // Settings panel
 
-    private JPanel panel_time = new JPanel();
     private JLabel label_time = new JLabel("Time");
     private JTextField text_time = new JTextField("10");
 
-    private JPanel panel_x = new JPanel();
     private JLabel label_x = new JLabel("X(0)");
     private JTextField text_x = new JTextField("200");
 
-    private JPanel panel_v = new JPanel();
     private JLabel label_v = new JLabel("V(0)");
     private JTextField text_v = new JTextField("10");
 
-    private JPanel panel_a = new JPanel();
     private JLabel label_a = new JLabel("a(0)");
     private JTextField text_a = new JTextField("-10");
 
-    private JPanel panel_t_0 = new JPanel();
     private JLabel label_t_0 = new JLabel("t(0)");
     private JTextField text_t_0 = new JTextField("0");
 
-    private JPanel panel_dt = new JPanel();
     private JLabel label_dt = new JLabel("dt");
     private JTextField text_dt = new JTextField("0.1");
+
+    private JLabel label_x_trig = new JLabel("X trig");
+    private JTextField text_x_trig = new JTextField("100");
+
+    private JLabel label_a_trig = new JLabel("A trig");
+    private JTextField text_a_trig = new JTextField("10");
 
     private JButton simulate = new JButton("Simulate");
 
@@ -55,49 +58,86 @@ public class Gui implements ActionListener
         simulate.addActionListener(this);
 
         window.setTitle("Motion");
-        window.setSize(800, 400);
+        window.setSize(400, 100);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setLayout(new GridLayout(0,2));
-
-        settings.setLayout(new GridLayout(2,4));
+        window.setResizable(false);
+        window.setAlwaysOnTop(true);
 
         
-        panel_time.setLayout(new GridLayout(2,0));
-        panel_time.add(label_time);
-        panel_time.add(text_time);
-        settings.add(panel_time);
+        graph.setTitle("Motion chart");
+        graph.setSize(800,700);
+        graph.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        graph.setLayout(new BorderLayout());
 
-        panel_x.setLayout(new GridLayout(2,0));
-        panel_x.add(label_x);
-        panel_x.add(text_x);
-        settings.add(panel_x);
 
-        panel_v.setLayout(new GridLayout(2,0));
-        panel_v.add(label_v);
-        panel_v.add(text_v);
-        settings.add(panel_v);
+        GridBagConstraints gbc = new GridBagConstraints();
 
-        panel_a.setLayout(new GridLayout(2,0));
-        panel_a.add(label_a);
-        panel_a.add(text_a);
-        settings.add(panel_a);
+        gbc.gridx = 0;
 
-        panel_t_0.setLayout(new GridLayout(2,0));
-        panel_t_0.add(label_t_0);
-        panel_t_0.add(text_t_0);
-        settings.add(panel_t_0);
+        gbc.gridy = 0;
+        settings.add(label_time, gbc);
+        gbc.gridy = 1;
+        settings.add(text_time, gbc);
 
-        panel_dt.setLayout(new GridLayout(2,0));
-        panel_dt.add(label_dt);
-        panel_dt.add(text_dt);
-        settings.add(panel_dt);
+        gbc.gridx = 1;
 
-        settings.add(simulate);
+        gbc.gridy = 0;
+        settings.add(label_x, gbc);
+        gbc.gridy = 1;
+        settings.add(text_x, gbc);
 
-        window.add(settings);
-        window.add(chart.getChart());
+        gbc.gridx = 2;
 
+        gbc.gridy = 0;
+        settings.add(label_v, gbc);
+        gbc.gridy = 1;
+        settings.add(text_v, gbc);
+
+        gbc.gridx = 3;
+
+        gbc.gridy = 0;
+        settings.add(label_a, gbc);
+        gbc.gridy = 1;
+        settings.add(text_a, gbc);
+
+        gbc.gridx = 4;
+
+        gbc.gridy = 0;
+        settings.add(label_t_0, gbc);
+        gbc.gridy = 1;
+        settings.add(text_t_0, gbc);
+
+        gbc.gridx = 5;
+
+        gbc.gridy = 0;
+        settings.add(label_dt, gbc);
+        gbc.gridy = 1;
+        settings.add(text_dt, gbc);
+
+        gbc.gridx = 6;
+
+        gbc.gridy = 0;
+        settings.add(label_x_trig, gbc);
+        gbc.gridy = 1;
+        settings.add(text_x_trig, gbc);
+
+        gbc.gridx = 7;
+
+        gbc.gridy = 0;
+        settings.add(label_a_trig, gbc);
+        gbc.gridy = 1;
+        settings.add(text_a_trig, gbc);
+
+        gbc.gridx = 8;
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        settings.add(simulate, gbc);
+
+        window.add(settings, BorderLayout.CENTER);
+        graph.add(chart.getChart(), BorderLayout.CENTER);
+      
         window.setVisible(true);
+        graph.setVisible(true);
     }
     public void actionPerformed(ActionEvent e)
     {
@@ -106,8 +146,8 @@ public class Gui implements ActionListener
                          Double.parseDouble(text_a.getText()), 
                          Double.parseDouble(text_t_0.getText()), 
                          Double.parseDouble(text_dt.getText()), 
-                         100, 
-                         15);
+                         Double.parseDouble(text_x_trig.getText()), 
+                         Double.parseDouble(text_a_trig.getText()));
 
         motion.simulate(Double.parseDouble(text_time.getText()));
     }

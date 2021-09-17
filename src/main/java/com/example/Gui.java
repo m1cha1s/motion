@@ -55,7 +55,7 @@ public class Gui implements ActionListener
         simulate.addActionListener(this);
 
         window.setTitle("Motion");
-        window.setSize(400, 600);
+        window.setSize(800, 400);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLayout(new GridLayout(0,2));
 
@@ -101,7 +101,14 @@ public class Gui implements ActionListener
     }
     public void actionPerformed(ActionEvent e)
     {
-        motion.setValues(Double.parseDouble(text_x.getText()), Double.parseDouble(text_v.getText()), Double.parseDouble(text_a.getText()), Double.parseDouble(text_t_0.getText()), Double.parseDouble(text_dt.getText()));
+        motion.setValues(Double.parseDouble(text_x.getText()), 
+                         Double.parseDouble(text_v.getText()), 
+                         Double.parseDouble(text_a.getText()), 
+                         Double.parseDouble(text_t_0.getText()), 
+                         Double.parseDouble(text_dt.getText()), 
+                         100, 
+                         15);
+
         motion.simulate(Double.parseDouble(text_time.getText()));
     }
 }

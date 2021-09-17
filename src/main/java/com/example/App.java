@@ -8,6 +8,7 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        Motion_prediction mot = new Motion_prediction();
+        Gui g = new Gui(mot);
     }
 }

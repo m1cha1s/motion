@@ -63,7 +63,7 @@ public class Motion_prediction {
         return a;
     }
 
-    public XYDataset simulate(double time)
+    public void simulate(double time)
     {
         while(t < time)
         {
@@ -73,6 +73,10 @@ public class Motion_prediction {
             ground.add(t, 0);
             t += dt;
         }
+    }
+
+    public XYDataset getDataset()
+    {
         return data;
     }
 }
